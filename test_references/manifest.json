@@ -1,0 +1,668 @@
+[
+  {
+    "file": "tc01_alpha_Q_mask0.txt",
+    "data": "HELLO WORLD",
+    "ec": "Quartile",
+    "version": 1,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc02_alpha_H_mask3.txt",
+    "data": "HELLO WORLD",
+    "ec": "High",
+    "version": 2,
+    "mask": 3,
+    "actual_mask": 3,
+    "size": 25
+  },
+  {
+    "file": "tc03_num_M_mask2.txt",
+    "data": "01234567",
+    "ec": "Medium",
+    "version": 1,
+    "mask": 2,
+    "actual_mask": 2,
+    "size": 21
+  },
+  {
+    "file": "tc04_byte_L_mask5.txt",
+    "data": "Hello, world!",
+    "ec": "Low",
+    "version": 1,
+    "mask": 5,
+    "actual_mask": 5,
+    "size": 21
+  },
+  {
+    "file": "tc05_alpha_H_mask7.txt",
+    "data": "AC-42",
+    "ec": "High",
+    "version": 1,
+    "mask": 7,
+    "actual_mask": 7,
+    "size": 21
+  },
+  {
+    "file": "tc06_byte_M_mask1.txt",
+    "data": "https://example.com",
+    "ec": "Medium",
+    "version": 2,
+    "mask": 1,
+    "actual_mask": 1,
+    "size": 25
+  },
+  {
+    "file": "tc07_num_Q_mask4.txt",
+    "data": "0123456789012345",
+    "ec": "Quartile",
+    "version": 1,
+    "mask": 4,
+    "actual_mask": 4,
+    "size": 21
+  },
+  {
+    "file": "tc08_alpha_M_auto.txt",
+    "data": "HELLO WORLD",
+    "ec": "Medium",
+    "version": 1,
+    "mask": -1,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc09_num_H_auto.txt",
+    "data": "1234567890",
+    "ec": "High",
+    "version": 1,
+    "mask": -1,
+    "actual_mask": 3,
+    "size": 21
+  },
+  {
+    "file": "tc10_byte_L_mask6.txt",
+    "data": "Test1234!",
+    "ec": "Low",
+    "version": 1,
+    "mask": 6,
+    "actual_mask": 6,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_M_mask0.txt",
+    "data": "HELLO WORLD",
+    "ec": "Medium",
+    "version": 1,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_M_mask1.txt",
+    "data": "HELLO WORLD",
+    "ec": "Medium",
+    "version": 1,
+    "mask": 1,
+    "actual_mask": 1,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_M_mask2.txt",
+    "data": "HELLO WORLD",
+    "ec": "Medium",
+    "version": 1,
+    "mask": 2,
+    "actual_mask": 2,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_M_mask3.txt",
+    "data": "HELLO WORLD",
+    "ec": "Medium",
+    "version": 1,
+    "mask": 3,
+    "actual_mask": 3,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_M_mask4.txt",
+    "data": "HELLO WORLD",
+    "ec": "Medium",
+    "version": 1,
+    "mask": 4,
+    "actual_mask": 4,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_M_mask5.txt",
+    "data": "HELLO WORLD",
+    "ec": "Medium",
+    "version": 1,
+    "mask": 5,
+    "actual_mask": 5,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_M_mask6.txt",
+    "data": "HELLO WORLD",
+    "ec": "Medium",
+    "version": 1,
+    "mask": 6,
+    "actual_mask": 6,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_M_mask7.txt",
+    "data": "HELLO WORLD",
+    "ec": "Medium",
+    "version": 1,
+    "mask": 7,
+    "actual_mask": 7,
+    "size": 21
+  },
+  {
+    "file": "tc_num_L_mask0.txt",
+    "data": "0123456789",
+    "ec": "Low",
+    "version": 1,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc_num_L_mask1.txt",
+    "data": "0123456789",
+    "ec": "Low",
+    "version": 1,
+    "mask": 1,
+    "actual_mask": 1,
+    "size": 21
+  },
+  {
+    "file": "tc_num_L_mask2.txt",
+    "data": "0123456789",
+    "ec": "Low",
+    "version": 1,
+    "mask": 2,
+    "actual_mask": 2,
+    "size": 21
+  },
+  {
+    "file": "tc_num_L_mask3.txt",
+    "data": "0123456789",
+    "ec": "Low",
+    "version": 1,
+    "mask": 3,
+    "actual_mask": 3,
+    "size": 21
+  },
+  {
+    "file": "tc_num_L_mask4.txt",
+    "data": "0123456789",
+    "ec": "Low",
+    "version": 1,
+    "mask": 4,
+    "actual_mask": 4,
+    "size": 21
+  },
+  {
+    "file": "tc_num_L_mask5.txt",
+    "data": "0123456789",
+    "ec": "Low",
+    "version": 1,
+    "mask": 5,
+    "actual_mask": 5,
+    "size": 21
+  },
+  {
+    "file": "tc_num_L_mask6.txt",
+    "data": "0123456789",
+    "ec": "Low",
+    "version": 1,
+    "mask": 6,
+    "actual_mask": 6,
+    "size": 21
+  },
+  {
+    "file": "tc_num_L_mask7.txt",
+    "data": "0123456789",
+    "ec": "Low",
+    "version": 1,
+    "mask": 7,
+    "actual_mask": 7,
+    "size": 21
+  },
+  {
+    "file": "tc_byte_Q_mask0.txt",
+    "data": "Hello APL!",
+    "ec": "Quartile",
+    "version": 1,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc_byte_Q_mask1.txt",
+    "data": "Hello APL!",
+    "ec": "Quartile",
+    "version": 1,
+    "mask": 1,
+    "actual_mask": 1,
+    "size": 21
+  },
+  {
+    "file": "tc_byte_Q_mask2.txt",
+    "data": "Hello APL!",
+    "ec": "Quartile",
+    "version": 1,
+    "mask": 2,
+    "actual_mask": 2,
+    "size": 21
+  },
+  {
+    "file": "tc_byte_Q_mask3.txt",
+    "data": "Hello APL!",
+    "ec": "Quartile",
+    "version": 1,
+    "mask": 3,
+    "actual_mask": 3,
+    "size": 21
+  },
+  {
+    "file": "tc_byte_Q_mask4.txt",
+    "data": "Hello APL!",
+    "ec": "Quartile",
+    "version": 1,
+    "mask": 4,
+    "actual_mask": 4,
+    "size": 21
+  },
+  {
+    "file": "tc_byte_Q_mask5.txt",
+    "data": "Hello APL!",
+    "ec": "Quartile",
+    "version": 1,
+    "mask": 5,
+    "actual_mask": 5,
+    "size": 21
+  },
+  {
+    "file": "tc_byte_Q_mask6.txt",
+    "data": "Hello APL!",
+    "ec": "Quartile",
+    "version": 1,
+    "mask": 6,
+    "actual_mask": 6,
+    "size": 21
+  },
+  {
+    "file": "tc_byte_Q_mask7.txt",
+    "data": "Hello APL!",
+    "ec": "Quartile",
+    "version": 1,
+    "mask": 7,
+    "actual_mask": 7,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_ecL_mask2.txt",
+    "data": "TEST DATA",
+    "ec": "Low",
+    "version": 1,
+    "mask": 2,
+    "actual_mask": 2,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_ecM_mask2.txt",
+    "data": "TEST DATA",
+    "ec": "Medium",
+    "version": 1,
+    "mask": 2,
+    "actual_mask": 2,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_ecQ_mask2.txt",
+    "data": "TEST DATA",
+    "ec": "Quartile",
+    "version": 1,
+    "mask": 2,
+    "actual_mask": 2,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_ecH_mask2.txt",
+    "data": "TEST DATA",
+    "ec": "High",
+    "version": 1,
+    "mask": 2,
+    "actual_mask": 2,
+    "size": 21
+  },
+  {
+    "file": "tc_version1_mask0.txt",
+    "data": "12345",
+    "ec": "High",
+    "version": 1,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc_version2_mask1.txt",
+    "data": "12345678901234567890",
+    "ec": "High",
+    "version": 2,
+    "mask": 1,
+    "actual_mask": 1,
+    "size": 25
+  },
+  {
+    "file": "tc_version3_mask2.txt",
+    "data": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456",
+    "ec": "High",
+    "version": 3,
+    "mask": 2,
+    "actual_mask": 2,
+    "size": 29
+  },
+  {
+    "file": "tc_version4_mask3.txt",
+    "data": "ABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJ",
+    "ec": "High",
+    "version": 4,
+    "mask": 3,
+    "actual_mask": 3,
+    "size": 33
+  },
+  {
+    "file": "tc_version5_mask4.txt",
+    "data": "ABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJABCD",
+    "ec": "High",
+    "version": 5,
+    "mask": 4,
+    "actual_mask": 4,
+    "size": 37
+  },
+  {
+    "file": "tc_version6_mask5.txt",
+    "data": "ABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJABCDEFGHIJABCD",
+    "ec": "High",
+    "version": 6,
+    "mask": 5,
+    "actual_mask": 5,
+    "size": 41
+  },
+  {
+    "file": "tc_auto_num_short.txt",
+    "data": "42",
+    "ec": "Medium",
+    "version": 1,
+    "mask": -1,
+    "actual_mask": 2,
+    "size": 21
+  },
+  {
+    "file": "tc_auto_alpha_url.txt",
+    "data": "HTTP://EXAMPLE.COM",
+    "ec": "Low",
+    "version": 1,
+    "mask": -1,
+    "actual_mask": 4,
+    "size": 21
+  },
+  {
+    "file": "tc_auto_byte_email.txt",
+    "data": "a@b.com",
+    "ec": "Quartile",
+    "version": 1,
+    "mask": -1,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc_auto_num_long.txt",
+    "data": "31415926535897932384626433832795028",
+    "ec": "Medium",
+    "version": 2,
+    "mask": -1,
+    "actual_mask": 6,
+    "size": 25
+  },
+  {
+    "file": "tc_auto_alpha_v2.txt",
+    "data": "THE QUICK BROWN FOX JUMPS",
+    "ec": "Quartile",
+    "version": 2,
+    "mask": -1,
+    "actual_mask": 0,
+    "size": 25
+  },
+  {
+    "file": "tc_auto_byte_v2.txt",
+    "data": "Hello, World! 12345",
+    "ec": "Low",
+    "version": 2,
+    "mask": -1,
+    "actual_mask": 2,
+    "size": 25
+  },
+  {
+    "file": "tc_maxcap_v1L_byte.txt",
+    "data": "XXXXXXXXXXXXXXXXX",
+    "ec": "Low",
+    "version": 1,
+    "mask": 3,
+    "actual_mask": 3,
+    "size": 21
+  },
+  {
+    "file": "tc_maxcap_v1H_num.txt",
+    "data": "99999999999999999",
+    "ec": "High",
+    "version": 1,
+    "mask": 5,
+    "actual_mask": 5,
+    "size": 21
+  },
+  {
+    "file": "tc_maxcap_v1M_alpha.txt",
+    "data": "ABCDEFGHIJ0123456789",
+    "ec": "Medium",
+    "version": 1,
+    "mask": 1,
+    "actual_mask": 1,
+    "size": 21
+  },
+  {
+    "file": "tc_single_num.txt",
+    "data": "7",
+    "ec": "High",
+    "version": 1,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc_single_alpha.txt",
+    "data": "Z",
+    "ec": "High",
+    "version": 1,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc_single_byte.txt",
+    "data": "z",
+    "ec": "Low",
+    "version": 1,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc_spaces.txt",
+    "data": "   ",
+    "ec": "Low",
+    "version": 1,
+    "mask": 2,
+    "actual_mask": 2,
+    "size": 21
+  },
+  {
+    "file": "tc_allzeros.txt",
+    "data": "0000000",
+    "ec": "Medium",
+    "version": 1,
+    "mask": 6,
+    "actual_mask": 6,
+    "size": 21
+  },
+  {
+    "file": "tc_url_lower.txt",
+    "data": "https://www.dyalog.com",
+    "ec": "Medium",
+    "version": 2,
+    "mask": 4,
+    "actual_mask": 4,
+    "size": 25
+  },
+  {
+    "file": "tc_v2_byte_mask0.txt",
+    "data": "Version 2 alignment test!",
+    "ec": "Medium",
+    "version": 2,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 25
+  },
+  {
+    "file": "tc_v2_byte_mask1.txt",
+    "data": "Version 2 alignment test!",
+    "ec": "Medium",
+    "version": 2,
+    "mask": 1,
+    "actual_mask": 1,
+    "size": 25
+  },
+  {
+    "file": "tc_v2_byte_mask2.txt",
+    "data": "Version 2 alignment test!",
+    "ec": "Medium",
+    "version": 2,
+    "mask": 2,
+    "actual_mask": 2,
+    "size": 25
+  },
+  {
+    "file": "tc_v2_byte_mask3.txt",
+    "data": "Version 2 alignment test!",
+    "ec": "Medium",
+    "version": 2,
+    "mask": 3,
+    "actual_mask": 3,
+    "size": 25
+  },
+  {
+    "file": "tc_v2_byte_mask4.txt",
+    "data": "Version 2 alignment test!",
+    "ec": "Medium",
+    "version": 2,
+    "mask": 4,
+    "actual_mask": 4,
+    "size": 25
+  },
+  {
+    "file": "tc_v2_byte_mask5.txt",
+    "data": "Version 2 alignment test!",
+    "ec": "Medium",
+    "version": 2,
+    "mask": 5,
+    "actual_mask": 5,
+    "size": 25
+  },
+  {
+    "file": "tc_v2_byte_mask6.txt",
+    "data": "Version 2 alignment test!",
+    "ec": "Medium",
+    "version": 2,
+    "mask": 6,
+    "actual_mask": 6,
+    "size": 25
+  },
+  {
+    "file": "tc_v2_byte_mask7.txt",
+    "data": "Version 2 alignment test!",
+    "ec": "Medium",
+    "version": 2,
+    "mask": 7,
+    "actual_mask": 7,
+    "size": 25
+  },
+  {
+    "file": "tc_num_rem0.txt",
+    "data": "123456789",
+    "ec": "Low",
+    "version": 1,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc_num_rem1.txt",
+    "data": "1234567890",
+    "ec": "Low",
+    "version": 1,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc_num_rem2.txt",
+    "data": "12345678",
+    "ec": "Low",
+    "version": 1,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_even.txt",
+    "data": "AB",
+    "ec": "High",
+    "version": 1,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc_alpha_odd.txt",
+    "data": "ABC",
+    "ec": "High",
+    "version": 1,
+    "mask": 0,
+    "actual_mask": 0,
+    "size": 21
+  },
+  {
+    "file": "tc_byte_punct.txt",
+    "data": "!@#$%^&*()",
+    "ec": "Low",
+    "version": 1,
+    "mask": 3,
+    "actual_mask": 3,
+    "size": 21
+  },
+  {
+    "file": "tc_byte_mixed.txt",
+    "data": "abc123DEF",
+    "ec": "Medium",
+    "version": 1,
+    "mask": 7,
+    "actual_mask": 7,
+    "size": 21
+  }
+]

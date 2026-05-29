@@ -642,7 +642,7 @@
           bestScore←⌊/⍬
           :For m :In ⍳8
               masked←ApplyMask mat res m
-              score←Penalty masked
+              score←Penalty(WriteFormatInfo masked ver level m)
               :If score<bestScore
                   bestScore←score
                   bestMask←m

@@ -33,6 +33,20 @@ Copy the `QR` namespace folder into your project and load it:
       ⎕SE.Link.Import # 'path/to/QR'
 ```
 
+## Running the APL test suite
+
+1. Generate (or refresh) reference matrices:
+
+```powershell
+python generate_test_references.py
+```
+
+2. Run the APL test script:
+
+```powershell
+D:\devel\dyalog\20.0\scriptbin\dyalogscript.ps1 .\test_qr.apls
+```
+
 ## License
 
 This project is released into the public domain under the [Unlicense](LICENSE).
