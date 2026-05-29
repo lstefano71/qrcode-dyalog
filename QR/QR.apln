@@ -240,94 +240,46 @@
     AlphaChars←'0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:'
 
     ⍝ ═══════════════════════════════════════════════════════════════════
-    ⍝ BITWISE OPERATORS
-    ⍝ ═══════════════════════════════════════════════════════════════════
-    _b_←{2⊥⍺⍺/(2∘⊥⍣¯1)⍺,⍵}
-    xor←≠_b_
-    bor←∨_b_
-    band←∧_b_
-
-    ⍝ ═══════════════════════════════════════════════════════════════════
-    ⍝ FUNCTIONS — GF(256) Arithmetic
+    ⍝ GF(256) Arithmetic
     ⍝ ═══════════════════════════════════════════════════════════════════
 
-    GFMul←{
-        (⍺=0)∨⍵=0:0
-        GFExp[255|GFLog[⍺]+GFLog[⍵]]
-    }
+    GFMul←{(⍺=0)∨⍵=0:0 ⋄ GFExp[255|GFLog[⍺]+GFLog[⍵]]}
 
-    GFXor←{
-        2⊥((8⍴2)⊤⍺)≠(8⍴2)⊤⍵
-    }
+    GFXor←{2⊥((8⍴2)⊤⍺)≠(8⍴2)⊤⍵}
 
     RSGenPoly←{
-        n←⍵
         poly←,1
-        _←{
-            ai←GFExp[⍵]
-            shifted←poly,0
-            scaled←0,ai∘GFMul¨poly
-            poly⊢←shifted GFXor scaled
-            ⍵
-        }¨⍳n
+        _←{poly⊢←(poly,0)GFXor 0,GFExp[⍵]∘GFMul¨poly}¨⍳⍵
         poly
     }
 
     RSEncode←{
-        nsym←⍺
-        gen←RSGenPoly nsym
-        msg←⍵,nsym⍴0
-        _←{
-            coeff←⍵⌷msg
-            coeff=0:⍵
-            update←coeff∘GFMul¨1↓gen
-            idx←⍵+1+⍳nsym
-            msg[idx]⊢←msg[idx]GFXor update
-            ⍵
-        }¨⍳≢⍵
+        nsym←⍺ ⋄ gen←RSGenPoly nsym ⋄ msg←⍵,nsym⍴0
+        _←{c←⍵⌷msg ⋄ c=0:⍬ ⋄ i←⍵+1+⍳nsym ⋄ msg[i]⊢←msg[i]GFXor c∘GFMul¨1↓gen}¨⍳≢⍵
         (≢⍵)↓msg
     }
 
     ⍝ ═══════════════════════════════════════════════════════════════════
-    ⍝ FUNCTIONS — Mode Detection & Encoding
+    ⍝ Mode Detection & Encoding
     ⍝ ═══════════════════════════════════════════════════════════════════
 
-    DetectMode←{
-        ~0=10|⎕DR ⍵:2
-        ∧/⍵∊'0123456789':0
-        ∧/⍵∊AlphaChars:1
-        2
-    }
+    DetectMode←{0≠10|⎕DR ⍵:2 ⋄ ∧/⍵∊'0123456789':0 ⋄ ∧/⍵∊AlphaChars:1 ⋄ 2}
 
     EncodeNumeric←{
-        digits←'0123456789'⍳⍵
-        n←≢digits
+        d←'0123456789'⍳⍵ ⋄ n←≢d ⋄ full←⌊n÷3 ⋄ rem←3|n
         n=0:⍬
-        full←⌊n÷3
-        rem←3|n
-        (full=0)∧rem=1:(4⍴2)⊤⊃digits
-        (full=0)∧rem=2:(7⍴2)⊤digits+.×10 1
-        groups←(full,3)⍴(full×3)↑digits
-        vals←groups+.×100 10 1
-        bits←,⍉(10⍴2)⊤vals
-        rem=0:bits
-        tail←(full×3)↓digits
-        rem=1:bits,(4⍴2)⊤⊃tail
-        bits,(7⍴2)⊤tail+.×10 1
+        (full=0)∧rem=1:(4⍴2)⊤⊃d
+        (full=0)∧rem=2:(7⍴2)⊤d+.×10 1
+        bits←,⍉(10⍴2)⊤((full,3)⍴(full×3)↑d)+.×100 10 1
+        tail←(full×3)↓d
+        rem=0:bits ⋄ rem=1:bits,(4⍴2)⊤⊃tail ⋄ bits,(7⍴2)⊤tail+.×10 1
     }
 
     EncodeAlphanumeric←{
-        vals←AlphaChars⍳⍵
-        n←≢vals
-        n=0:⍬
-        full←⌊n÷2
-        rem←2|n
-        full=0:(6⍴2)⊤⊃vals
-        pairs←(full,2)⍴(full×2)↑vals
-        pvals←pairs+.×45 1
-        bits←,⍉(11⍴2)⊤pvals
-        rem=0:bits
-        bits,(6⍴2)⊤⊃(full×2)↓vals
+        v←AlphaChars⍳⍵ ⋄ n←≢v ⋄ full←⌊n÷2 ⋄ rem←2|n
+        n=0:⍬ ⋄ full=0:(6⍴2)⊤⊃v
+        bits←,⍉(11⍴2)⊤((full,2)⍴(full×2)↑v)+.×45 1
+        rem=0:bits ⋄ bits,(6⍴2)⊤⊃(full×2)↓v
     }
 
     EncodeByte←{
@@ -335,324 +287,191 @@
         (,⍉(8⍴2)⊤bytes)(≢bytes)
     }
 
-    EncodeData←{
-        mode←⍺
-        mode=0:EncodeNumeric ⍵
-        mode=1:EncodeAlphanumeric ⍵
-        ⊃EncodeByte ⍵
-    }
+    EncodeData←{⍺=0:EncodeNumeric ⍵ ⋄ ⍺=1:EncodeAlphanumeric ⍵ ⋄ ⊃EncodeByte ⍵}
 
     ⍝ ═══════════════════════════════════════════════════════════════════
-    ⍝ FUNCTIONS — Bitstream Assembly
+    ⍝ Bitstream Assembly
     ⍝ ═══════════════════════════════════════════════════════════════════
 
     BuildBitstream←{
-        ver level←⍺
-        mode data←⍵
+        ver level←⍺ ⋄ mode data←⍵
         modeInd←(4⍴2)⊤1 2 4[mode]
         vr←(ver≥9)+(ver≥26)
-        ccLen←CCBits[vr;mode]
-        dataBits n←{
-            mode=2:EncodeByte ⍵
-            bits←mode EncodeData ⍵
-            bits(≢⍵)
-        }data
-        ccInd←(ccLen⍴2)⊤n
-        cap←⊃DCap[ver;level]
-        totalDataCW←⊃cap
-        totalBits←8×totalDataCW
+        dataBits n←{mode=2:EncodeByte ⍵ ⋄ bits←mode EncodeData ⍵ ⋄ bits(≢⍵)}data
+        ccInd←(CCBits[vr;mode]⍴2)⊤n
+        totalBits←8×⊃⊃DCap[ver;level]
         bits←modeInd,ccInd,dataBits
         (≢bits)>totalBits:'Input too long for selected QR version/EC level'⎕SIGNAL 11
-        termLen←4⌊totalBits-≢bits
-        bits←bits,termLen⍴0
-        padBits←(8|-(≢bits))⍴0
-        bits←bits,padBits
+        bits←bits,(4⌊totalBits-≢bits)⍴0
+        bits←bits,((8|-(≢bits))⍴0)
         cw←2⊥⍉(((≢bits)÷8),8)⍴bits
-        padCW←totalDataCW-≢cw
-        fill←padCW⍴236 17
-        cw,fill
+        cw,(((⊃⊃DCap[ver;level])-≢cw)⍴236 17)
     }
 
     ⍝ ═══════════════════════════════════════════════════════════════════
-    ⍝ FUNCTIONS — Reed-Solomon Interleaving
+    ⍝ Reed-Solomon Interleaving
     ⍝ ═══════════════════════════════════════════════════════════════════
 
     Interleave←{
         ver level←⍺
-        cap←⊃DCap[ver;level]
-        totalDataCW ecPerBlock g1Blocks g1Data g2Blocks g2Data←cap
+        totalDataCW ecPerBlock g1Blocks g1Data g2Blocks g2Data←⊃DCap[ver;level]
         g1←g1Blocks{⍺=0:⍬ ⋄ ↓(⍺,g1Data)⍴(⍺×g1Data)↑⍵}⍵
-        rest←(g1Blocks×g1Data)↓⍵
-        g2←g2Blocks{⍺=0:⍬ ⋄ ↓(⍺,g2Data)⍴(⍺×g2Data)↑⍵}rest
+        g2←g2Blocks{⍺=0:⍬ ⋄ ↓(⍺,g2Data)⍴(⍺×g2Data)↑⍵}(g1Blocks×g1Data)↓⍵
         blocks←g1,g2
         ecBlocks←ecPerBlock∘RSEncode¨blocks
-        maxDataLen←g1Data⌈g2Data
         iData←{
             0=≢⍵:⍬
-            padded←{⍵,(maxDataLen-≢⍵)⍴¯1}¨⍵
-            mat←↑padded
-            cols←↓⍉mat
-            ∊{⍵/⍨⍵≥0}¨cols
+            maxLen←⌈/≢¨⍵
+            ∊{⍵/⍨⍵≥0}¨↓⍉↑{⍵,(maxLen-≢⍵)⍴¯1}¨⍵
         }blocks
-        iEC←{
-            0=≢⍵:⍬
-            ∊↓⍉↑⍵
-        }ecBlocks
-        allCW←iData,iEC
-        dataBits←,⍉(8⍴2)⊤allCW
-        remBitCount←RemBits[ver]
-        dataBits,remBitCount⍴0
+        iEC←{0=≢⍵:⍬ ⋄ ∊↓⍉↑⍵}ecBlocks
+        (,⍉(8⍴2)⊤iData,iEC),RemBits[ver]⍴0
     }
 
     ⍝ ═══════════════════════════════════════════════════════════════════
-    ⍝ TRADFNS — Version Selection
+    ⍝ Version Selection
     ⍝ ═══════════════════════════════════════════════════════════════════
 
-    ∇ r←SelectVersion args;level;mode;n;ver;cap
-      level mode n←args
-      :For ver :In ⍳40
-          cap←mode⊃⊃ModeCap[ver;level]
-          :If n≤cap
-              r←ver
-              :Return
-          :EndIf
-      :EndFor
-      r←¯1
-    ∇
+    SelectVersion←{
+        level mode n←⍵
+        hits←⍸n≤mode⊃¨ModeCap[;level]
+        0=≢hits:¯1 ⋄ ⊃hits
+    }
 
     ⍝ ═══════════════════════════════════════════════════════════════════
-    ⍝ TRADFNS — Matrix Layout
+    ⍝ Matrix Layout
     ⍝ ═══════════════════════════════════════════════════════════════════
 
-    ∇ r←PlacePatterns ver;size;mat;res;finder;tLen;tPat;apos;centers;keep;align5;r_c;rows;cols
+    ∇ r←PlacePatterns ver;size;mat;res;finder;tLen;tPat;apos;centers;keep;align5;rc;rows;cols
       size←17+4×ver+1
-      mat←(size size)⍴¯1
-      res←(size size)⍴0
+      mat←(size size)⍴¯1 ⋄ res←(size size)⍴0
      ⍝ Finder patterns (7×7)
       finder←7 7⍴1 1 1 1 1 1 1 1 0 0 0 0 0 1 1 0 1 1 1 0 1 1 0 1 1 1 0 1 1 0 1 1 1 0 1 1 0 0 0 0 0 1 1 1 1 1 1 1 1
-      mat[⍳7;⍳7]←finder
-      mat[⍳7;(size-7)+⍳7]←finder
-      mat[(size-7)+⍳7;⍳7]←finder
+      mat[⍳7;⍳7]←finder ⋄ mat[⍳7;(size-7)+⍳7]←finder ⋄ mat[(size-7)+⍳7;⍳7]←finder
      ⍝ Reserve 8-wide areas around finders
-      res[⍳8;⍳8]←1
-      res[⍳8;(size-8)+⍳8]←1
-      res[(size-8)+⍳8;⍳8]←1
+      res[⍳8;⍳8]←1 ⋄ res[⍳8;(size-8)+⍳8]←1 ⋄ res[(size-8)+⍳8;⍳8]←1
      ⍝ Separators
       mat[7;⍳8]←0 ⋄ mat[⍳8;7]←0
       mat[7;(size-8)+⍳8]←0 ⋄ mat[⍳8;size-8]←0
       mat[size-8;⍳8]←0 ⋄ mat[(size-8)+⍳8;7]←0
      ⍝ Timing patterns
-      tLen←size-16
-      tPat←tLen⍴1 0
-      mat[6;8+⍳tLen]←tPat
-      mat[8+⍳tLen;6]←tPat
-      res[6;8+⍳tLen]←1
-      res[8+⍳tLen;6]←1
+      tLen←size-16 ⋄ tPat←tLen⍴1 0
+      mat[6;8+⍳tLen]←tPat ⋄ mat[8+⍳tLen;6]←tPat
+      res[6;8+⍳tLen]←1 ⋄ res[8+⍳tLen;6]←1
      ⍝ Alignment patterns
       apos←ver⊃AlignPos
       :If 0<≢apos
           centers←,apos∘.,apos
-          keep←{r_c←⍵ ⋄ 0=((r_c[0]≤8)∧r_c[1]≤8)+((r_c[0]≤8)∧r_c[1]≥size-8)+(r_c[0]≥size-8)∧r_c[1]≤8}¨centers
+          keep←~((⊃¨centers)≤8)∧(1⊃¨centers)≤8
+          keep∧←~((⊃¨centers)≤8)∧(1⊃¨centers)≥size-8
+          keep∧←~((⊃¨centers)≥size-8)∧(1⊃¨centers)≤8
           centers←keep/centers
           align5←5 5⍴1 1 1 1 1 1 0 0 0 1 1 0 1 0 1 1 0 0 0 1 1 1 1 1 1
-          :For r_c :In centers
-              rows←(r_c[0]-2)+⍳5
-              cols←(r_c[1]-2)+⍳5
-              mat[rows;cols]←align5
-              res[rows;cols]←1
-          :EndFor
+          {rows←(⍵[0]-2)+⍳5 ⋄ cols←(⍵[1]-2)+⍳5 ⋄ mat[rows;cols]←align5 ⋄ res[rows;cols]←1}¨centers
       :EndIf
-     ⍝ Dark module
-      mat[(4×(ver+1))+9;8]←1
-      res[(4×(ver+1))+9;8]←1
-     ⍝ Reserve format info areas
-      res[8;⍳9]←1
-      res[8;(size-8)+⍳8]←1
-      res[⍳9;8]←1
-      res[(size-7)+⍳7;8]←1
-     ⍝ Reserve version info areas (spec version ≥7 = ver≥6)
+     ⍝ Dark module + format/version reserved areas
+      mat[(4×(ver+1))+9;8]←1 ⋄ res[(4×(ver+1))+9;8]←1
+      res[8;⍳9]←1 ⋄ res[8;(size-8)+⍳8]←1 ⋄ res[⍳9;8]←1 ⋄ res[(size-7)+⍳7;8]←1
       :If ver≥6
-          res[⍳6;(size-11)+⍳3]←1
-          res[(size-11)+⍳3;⍳6]←1
+          res[⍳6;(size-11)+⍳3]←1 ⋄ res[(size-11)+⍳3;⍳6]←1
       :EndIf
       r←mat res
     ∇
 
-    ∇ r←res PlaceData args;mat;bits;size;path;col;upward;row;nBits;i;pos
-      mat bits←args
-      size←⊃⍴mat
-      path←⍬
-      col←size-1
-      upward←1
+    ∇ r←res PlaceData args;mat;bits;size;path;col;upward;row
+      mat bits←args ⋄ size←⊃⍴mat
+      path←⍬ ⋄ col←size-1 ⋄ upward←1
       :While col≥0
-          :If col=6
-              col-←1
-              :Continue
-          :EndIf
+          :If col=6 ⋄ col-←1 ⋄ :Continue ⋄ :EndIf
           :For row :In {⍵:⌽⍳size ⋄ ⍳size}upward
-              :If ~res[row;col]
-                  path,←⊂row col
-              :EndIf
-              :If (col>0)∧~res[row;col-1]
-                  path,←⊂row(col-1)
-              :EndIf
+              :If ~res[row;col] ⋄ path,←⊂row col ⋄ :EndIf
+              :If (col>0)∧~res[row;col-1] ⋄ path,←⊂row(col-1) ⋄ :EndIf
           :EndFor
-          upward←~upward
-          col-←2
+          upward←~upward ⋄ col-←2
       :EndWhile
-      nBits←(≢path)⌊≢bits
-      :For i :In ⍳nBits
-          pos←i⊃path
-          mat[pos[0];pos[1]]←bits[i]
+      :For row :In ⍳(≢path)⌊≢bits
+          mat[⊃row⊃path;1⊃row⊃path]←bits[row]
       :EndFor
       r←mat
     ∇
 
     ⍝ ═══════════════════════════════════════════════════════════════════
-    ⍝ TRADFNS — Masking & Penalty
+    ⍝ Masking & Penalty
     ⍝ ═══════════════════════════════════════════════════════════════════
 
-    ∇ r←ApplyMask args;mat;res;mask;size;row;col;cond
-      mat res mask←args
-      size←⊃⍴mat
-      row←(⍳size)∘.+size⍴0
-      col←(size⍴0)∘.+⍳size
-      :Select mask
-      :Case 0 ⋄ cond←0=2|row+col
-      :Case 1 ⋄ cond←0=2|row
-      :Case 2 ⋄ cond←0=3|col
-      :Case 3 ⋄ cond←0=3|row+col
-      :Case 4 ⋄ cond←0=2|(⌊row÷2)+⌊col÷3
-      :Case 5 ⋄ cond←0=((2|row×col)+3|row×col)
-      :Case 6 ⋄ cond←0=2|(2|row×col)+3|row×col
-      :Case 7 ⋄ cond←0=2|(2|row+col)+3|row×col
-      :EndSelect
-      cond←cond∧~res
-      r←mat≠cond
-    ∇
+    ApplyMask←{
+        mat res mask←⍵
+        size←⊃⍴mat
+        r←(⍳size)∘.+size⍴0 ⋄ c←(size⍴0)∘.+⍳size
+        M←{⍵=0:0=2|r+c ⋄ ⍵=1:0=2|r ⋄ ⍵=2:0=3|c ⋄ ⍵=3:0=3|r+c
+            ⍵=4:0=2|(⌊r÷2)+⌊c÷3 ⋄ ⍵=5:0=(2|r×c)+3|r×c
+            ⍵=6:0=2|(2|r×c)+3|r×c ⋄ 0=2|(2|r+c)+3|r×c}
+        mat≠(M mask)∧~res
+    }
 
-    ∇ r←Penalty mat;size;p1;p2;p3;p4;i;row;col;runs;pat;count
-      size←⊃⍴mat
-      p1←0
-      :For i :In ⍳size
-          row←mat[i;]
-          runs←{≢⍵}¨(1,2≠/row)⊂row
-          p1+←+/(runs≥5)×runs-2
-          col←mat[;i]
-          runs←{≢⍵}¨(1,2≠/col)⊂col
-          p1+←+/(runs≥5)×runs-2
-      :EndFor
-     ⍝ Rule 2: 2×2 blocks
-      p2←3×+/,(mat[⍳size-1;⍳size-1]=mat[1+⍳size-1;⍳size-1])∧(mat[⍳size-1;⍳size-1]=mat[⍳size-1;1+⍳size-1])∧mat[⍳size-1;⍳size-1]=mat[1+⍳size-1;1+⍳size-1]
-     ⍝ Rule 3: finder-like patterns
-      pat←1 0 1 1 1 0 1 0 0 0 0
-      p3←0
-      :For i :In ⍳size
-          row←mat[i;]
-          :If (≢row)≥11
-              p3+←+/{(pat≡⍵)∨(⌽pat)≡⍵}¨{row[⍵+⍳11]}¨⍳(≢row)-10
-          :EndIf
-          col←mat[;i]
-          :If (≢col)≥11
-              p3+←+/{(pat≡⍵)∨(⌽pat)≡⍵}¨{col[⍵+⍳11]}¨⍳(≢col)-10
-          :EndIf
-      :EndFor
-      p3←40×p3
-     ⍝ Rule 4: balance
-      count←+/,mat
-      p4←10×⌊(|50-⌊0.5+100×count÷size×size)÷5
-      r←p1+p2+p3+p4
-    ∇
+    Penalty←{
+        size←⊃⍴⍵
+        lines←(↓⍵),↓⍉⍵
+        ⍝ Rule 1: runs ≥5
+        runs←∊{≢¨(1,2≠/⍵)⊂⍵}¨lines
+        p1←+/(runs≥5)×runs-2
+        ⍝ Rule 2: 2×2 blocks
+        tl←⍵[⍳size-1;⍳size-1]
+        p2←3×+/,(tl=⍵[1+⍳size-1;⍳size-1])∧(tl=⍵[⍳size-1;1+⍳size-1])∧tl=⍵[1+⍳size-1;1+⍳size-1]
+        ⍝ Rule 3: finder-like patterns (using ⍷)
+        pat←1 0 1 1 1 0 1 0 0 0 0
+        p3←40×+/+/¨(pat∘⍷¨lines),(⌽pat)∘⍷¨lines
+        ⍝ Rule 4: balance
+        p4←10×⌊(|50-⌊0.5+100×(+/,⍵)÷size×size)÷5
+        p1+p2+p3+p4
+    }
 
     ⍝ ═══════════════════════════════════════════════════════════════════
-    ⍝ TRADFNS — Format & Version Info
+    ⍝ Format & Version Info
     ⍝ ═══════════════════════════════════════════════════════════════════
 
-    ∇ r←WriteFormatInfo args;mat;ver;level;mask;size;bits;i
-      mat ver level mask←args
-      size←⊃⍴mat
-     ⍝ Format info (15 bits)
-      bits←(15⍴2)⊤FormatInfo[level;mask]
-     ⍝ First copy — around top-left finder
-      mat[8;0 1 2 3 4 5]←bits[0 1 2 3 4 5]
-      mat[8;7]←bits[6]
-      mat[8;8]←bits[7]
-      mat[7;8]←bits[8]
-      mat[5;8]←bits[9]
-      mat[4;8]←bits[10]
-      mat[3;8]←bits[11]
-      mat[2;8]←bits[12]
-      mat[1;8]←bits[13]
-      mat[0;8]←bits[14]
-     ⍝ Second copy — other finders
-      mat[(size-1 2 3 4 5 6 7);8]←bits[0 1 2 3 4 5 6]
-      mat[8;(size-8)+⍳8]←bits[7 8 9 10 11 12 13 14]
-     ⍝ Version info (versions ≥7, i.e., ver≥6 zero-based)
-      :If ver≥6
-          bits←⌽(18⍴2)⊤VersionInfo[ver-6]
-          :For i :In ⍳18
-              mat[⌊i÷3;(size-11)+3|i]←bits[i]
-          :EndFor
-          :For i :In ⍳18
-              mat[(size-11)+3|i;⌊i÷3]←bits[i]
-          :EndFor
-      :EndIf
-      r←mat
-    ∇
+    WriteFormatInfo←{
+        mat ver level mask←⍵
+        size←⊃⍴mat
+        bits←(15⍴2)⊤FormatInfo[level;mask]
+        ⍝ First copy — around top-left finder
+        mat[8;0 1 2 3 4 5 7 8]←bits[0 1 2 3 4 5 6 7]
+        mat[7 5 4 3 2 1 0;8]←bits[8 9 10 11 12 13 14]
+        ⍝ Second copy — other finders
+        mat[(size-1 2 3 4 5 6 7);8]←bits[0 1 2 3 4 5 6]
+        mat[8;(size-8)+⍳8]←bits[7 8 9 10 11 12 13 14]
+        ⍝ Version info (versions ≥7, i.e., ver≥6 zero-based)
+        ver<6:mat
+        vbits←⌽(18⍴2)⊤VersionInfo[ver-6]
+        _←{mat[⌊⍵÷3;(size-11)+3|⍵]←vbits[⍵]}¨⍳18
+        _←{mat[(size-11)+3|⍵;⌊⍵÷3]←vbits[⍵]}¨⍳18
+        mat
+    }
 
     ⍝ ═══════════════════════════════════════════════════════════════════
-    ⍝ TRADFN — Main Entry Point
+    ⍝ Main Entry Point
     ⍝ ═══════════════════════════════════════════════════════════════════
 
-    ∇ r←left Encode right;ecStr;level;forceMask;mode;data;byteCount;charCount;ver;mat;res;bits;masked;bestMask;bestScore;m;score
+    ∇ r←left Encode data;ecStr;level;forceMask;mode;byteCount;ver;mat;res;bits;bestMask;scores
       forceMask←¯1
-      :If 0=10|⎕DR left
-          ecStr←left
-      :Else
-          ecStr forceMask←left
-      :EndIf
+      :If 0=10|⎕DR left ⋄ ecStr←left ⋄ :Else ⋄ ecStr forceMask←left ⋄ :EndIf
       level←'LMQH'⍳⊃ecStr
-     ⍝ Parse right argument and detect mode
-      data←right
       mode←DetectMode data
-     ⍝ Character/byte count
-      :If mode=2
-          byteCount←≢{0=10|⎕DR ⍵:'UTF-8'⎕UCS ⍵ ⋄ ⍵}data
-          charCount←byteCount
-      :Else
-          charCount←≢data
-      :EndIf
-     ⍝ Select version
-      ver←SelectVersion level mode charCount
-      :If ver=¯1
-          'Input too long for any QR version at this EC level'⎕SIGNAL 11
-      :EndIf
-     ⍝ Build bitstream and interleave
-      bits←(ver level)BuildBitstream(mode data)
-      bits←(ver level)Interleave bits
-     ⍝ Place patterns and data
+     ⍝ Character/byte count for version selection
+      ver←SelectVersion level mode({mode=2:≢{0=10|⎕DR ⍵:'UTF-8'⎕UCS ⍵ ⋄ ⍵}⍵ ⋄ ≢⍵}data)
+      :If ver=¯1 ⋄ 'Input too long for any QR version at this EC level'⎕SIGNAL 11 ⋄ :EndIf
+     ⍝ Build bitstream, interleave, place
+      bits←(ver level)Interleave(ver level)BuildBitstream(mode data)
       mat res←PlacePatterns ver
       mat←res PlaceData mat bits
      ⍝ Masking
       :If forceMask≥0
-          mat←ApplyMask mat res forceMask
           bestMask←forceMask
       :Else
-          bestMask←0
-          bestScore←⌊/⍬
-          :For m :In ⍳8
-              masked←ApplyMask mat res m
-              score←Penalty(WriteFormatInfo masked ver level m)
-              :If score<bestScore
-                  bestScore←score
-                  bestMask←m
-              :EndIf
-          :EndFor
-          mat←ApplyMask mat res bestMask
+          scores←{Penalty WriteFormatInfo(ApplyMask mat res ⍵)ver level ⍵}¨⍳8
+          bestMask←scores⍳⌊/scores
       :EndIf
-     ⍝ Write format and version info
-      mat←WriteFormatInfo mat ver level bestMask
-      r←mat
+      r←WriteFormatInfo(ApplyMask mat res bestMask)ver level bestMask
     ∇
 
 :EndNamespace
