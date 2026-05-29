@@ -589,12 +589,12 @@
       mat[8;(size-8)+⍳8]←bits[7 8 9 10 11 12 13 14]
      ⍝ Version info (versions ≥7, i.e., ver≥6 zero-based)
       :If ver≥6
-          bits←(18⍴2)⊤VersionInfo[ver-6]
+          bits←⌽(18⍴2)⊤VersionInfo[ver-6]
           :For i :In ⍳18
-              mat[6|i;(size-11)+⌊i÷6]←bits[i]
+              mat[⌊i÷3;(size-11)+3|i]←bits[i]
           :EndFor
           :For i :In ⍳18
-              mat[(size-11)+⌊i÷6;6|i]←bits[i]
+              mat[(size-11)+3|i;⌊i÷3]←bits[i]
           :EndFor
       :EndIf
       r←mat
